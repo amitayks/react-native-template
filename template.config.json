@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Based Native App Template Configuration",
+  "description": "Configuration file for customizing the Based Native App template. This file is used by the setup wizard and AI assistants to customize the template for your specific project.",
+
+  "template": {
+    "version": "1.0.0",
+    "configured": false,
+    "configuredAt": null,
+    "comment": "Set 'configured' to true after running setup wizard. AI assistants check this to determine if wizard should run."
+  },
+
+  "project": {
+    "name": "{{APP_NAME}}",
+    "displayName": "{{APP_DISPLAY_NAME}}",
+    "packageName": "{{PACKAGE_NAME}}",
+    "bundleId": "{{BUNDLE_ID}}",
+    "description": "{{APP_DESCRIPTION}}",
+    "version": "1.0.0",
+    "comment": "Replace {{PLACEHOLDERS}} with your project details during setup."
+  },
+
+  "features": {
+    "comment": "Enable/disable modular features. Set to false to remove feature code.",
+    "ml": {
+      "enabled": false,
+      "includes": ["image-labeling", "text-recognition"],
+      "dependencies": ["@react-native-ml-kit/image-labeling", "@react-native-ml-kit/text-recognition"],
+      "files": ["src/services/ml/"]
+    },
+    "camera": {
+      "enabled": false,
+      "dependencies": ["react-native-vision-camera"],
+      "files": ["src/components/organisms/CameraCapture.tsx"]
+    },
+    "search": {
+      "enabled": false,
+      "dependencies": ["minisearch"],
+      "files": ["src/services/search/", "src/contexts/SearchContext.tsx"]
+    },
+    "backgroundProcessing": {
+      "enabled": false,
+      "dependencies": ["react-native-background-actions"],
+      "files": ["src/services/background/", "src/services/orchestrator/"]
+    },
+    "encryption": {
+      "enabled": true,
+      "comment": "Encryption service for secure data storage",
+      "dependencies": ["react-native-quick-crypto", "react-native-keychain"]
+    },
+    "notifications": {
+      "enabled": true,
+      "dependencies": ["@notifee/react-native"]
+    }
+  },
+
+  "branding": {
+    "comment": "Theme and branding configuration. Customize colors, fonts, and visual identity.",
+    "theme": {
+      "primaryColor": "{{PRIMARY_COLOR}}",
+      "secondaryColor": "{{SECONDARY_COLOR}}",
+      "accentColor": "{{ACCENT_COLOR}}",
+      "comment": "Hex color codes (e.g., #6200EE). Will be applied to theme/colors.ts"
+    },
+    "typography": {
+      "fontFamily": "{{FONT_FAMILY}}",
+      "comment": "Custom font family name. Requires font files in assets/fonts/"
+    },
+    "logo": {
+      "path": "{{LOGO_PATH}}",
+      "comment": "Path to app logo/icon"
+    }
+  },
+
+  "domain": {
+    "comment": "Domain-specific configuration for your app's business logic.",
+    "context": "{{DOMAIN_DESCRIPTION}}",
+    "primaryEntity": "{{PRIMARY_ENTITY}}",
+    "entities": [
+      {
+        "name": "{{ENTITY_NAME}}",
+        "table": "{{TABLE_NAME}}",
+        "fields": ["{{FIELD_1}}", "{{FIELD_2}}"]
+      }
+    ],
+    "comment2": "Example: For a task management app, primaryEntity='Task', entities=[{name:'Task', table:'tasks', fields:['title','status','dueDate']}]"
+  },
+
+  "openspec": {
+    "comment": "OpenSpec integration configuration",
+    "enabled": true,
+    "specs": {
+      "dataLayer": "specs/data-layer/spec.md",
+      "navigation": "specs/navigation/spec.md",
+      "screens": "specs/screens/spec.md",
+      "stateManagement": "specs/state-management/spec.md"
+    },
+    "aiInstructions": {
+      "dataModel": "openspec/ai-instructions/data-model-creation.md",
+      "screenGeneration": "openspec/ai-instructions/screen-generation.md",
+      "themeCustomization": "openspec/ai-instructions/theme-customization.md",
+      "navigationConfig": "openspec/ai-instructions/navigation-configuration.md",
+      "contextCreation": "openspec/ai-instructions/context-creation.md",
+      "settingsConfig": "openspec/ai-instructions/settings-configuration.md"
+    }
+  },
+
+  "wizard": {
+    "comment": "Setup wizard configuration",
+    "mode": "interactive",
+    "comment2": "Modes: 'interactive' (questions) or 'file' (pre-written config)",
+    "configFile": null,
+    "steps": [
+      "project-identity",
+      "feature-selection",
+      "branding-theme",
+      "domain-context",
+      "generate-scaffold"
+    ]
+  },
+
+  "metadata": {
+    "templateSource": "https://github.com/amitayks/react-native-template",
+    "docs": "https://github.com/amitayks/react-native-template#readme",
+    "createdBy": "Based Native App Template",
+    "license": "MIT"
+  }
+}

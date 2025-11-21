@@ -4,23 +4,38 @@ import { useCallback } from "react";
 import { StyleSheet } from "react-native";
 import DeviceInfo from "react-native-device-info";
 
+/* AI-INSTRUCTION-START:settings-screen
+ * This is the settings screen wrapper for your application.
+ *
+ * CUSTOMIZATION REQUIRED:
+ * 1. Add your app-specific settings toggles and options
+ * 2. Implement handlers for settings changes
+ * 3. Add settings sections relevant to your app
+ * 4. Integrate with your SettingsContext for state management
+ *
+ * The SettingsDrawer component provides the UI, while this screen
+ * manages the business logic and state updates.
+ *
+ * OpenSpec Reference: specs/screens/spec.md
+ * AI Instructions: openspec/ai-instructions/settings-configuration.md
+ * AI-INSTRUCTION-END */
+
 export function SettingsScreen() {
 	const { state: settingsState, dispatch: settingsDispatch } = useSettings();
 
 	// Get app version
 	const appVersion = DeviceInfo.getVersion();
 
-	// Handle Battery Saver toggle
-	const handleBatterySaverToggle = useCallback((_enabled: boolean) => {
-		settingsDispatch({ type: "TOGGLE_BATTERY_SAVER" });
-	}, [settingsDispatch]);
+	/* AI-INSTRUCTION-START:settings-handlers
+	 * Add handlers for your custom settings here.
+	 *
+	 * Example:
+	 * const handleNotificationToggle = useCallback((enabled: boolean) => {
+	 *   settingsDispatch({ type: 'TOGGLE_NOTIFICATIONS', payload: enabled });
+	 * }, [settingsDispatch]);
+	 * AI-INSTRUCTION-END */
 
-	// Handle Night Processing toggle
-	const handleNightProcessingToggle = useCallback((_enabled: boolean) => {
-		settingsDispatch({ type: "TOGGLE_NIGHT_PROCESSING" });
-	}, [settingsDispatch]);
-
-	// Handle theme change - updates immediately (FR-062)
+	// Handle theme change
 	const handleThemeChange = useCallback((theme: Theme) => {
 		settingsDispatch({ type: "SET_THEME", payload: theme });
 	}, [settingsDispatch]);
@@ -28,15 +43,14 @@ export function SettingsScreen() {
 	// Handle Clear Cache
 	const handleClearCache = useCallback(async () => {
 		try {
-			// TODO: Implement actual cache clearing logic
-			// - Clear thumbnail cache
-			// - Clear temporary files
-			// - Clear any cached data
+			/* AI-INSTRUCTION-START:cache-clearing
+			 * Implement cache clearing logic for your app:
+			 * - Clear temporary files
+			 * - Clear cached images/data
+			 * - Reset any in-memory caches
+			 * AI-INSTRUCTION-END */
 			console.log("Clearing cache...");
-
-			// Simulate async operation
 			await new Promise(resolve => setTimeout(resolve, 500));
-
 			console.log("Cache cleared successfully");
 		} catch (error) {
 			console.error("Failed to clear cache:", error);
@@ -46,21 +60,17 @@ export function SettingsScreen() {
 	// Handle Delete All Data
 	const handleDeleteAllData = useCallback(async () => {
 		try {
-			// TODO: Implement complete data deletion
-			// - Clear all WatermelonDB data
-			// - Clear MMKV storage
-			// - Clear search index
-			// - Reset encryption keys
-			// - Clear all preferences
-			// - Reset app to initial state
+			/* AI-INSTRUCTION-START:data-deletion
+			 * Implement complete data deletion for your app:
+			 * - Clear all WatermelonDB data
+			 * - Clear MMKV storage
+			 * - Reset any app-specific state
+			 * - Clear user preferences
+			 * - Reset app to initial state
+			 * AI-INSTRUCTION-END */
 			console.log("Deleting all data...");
-
-			// Reset settings to initial state
 			settingsDispatch({ type: "RESET_SETTINGS" });
-
-			// Simulate async operation
 			await new Promise(resolve => setTimeout(resolve, 500));
-
 			console.log("All data deleted successfully");
 		} catch (error) {
 			console.error("Failed to delete data:", error);
@@ -69,23 +79,28 @@ export function SettingsScreen() {
 
 	// Handle drawer close
 	const handleDrawerClose = useCallback(() => {
-		// Navigate back to previous screen
 		console.log("Settings drawer closed");
 	}, []);
 
-	// Legal section handlers (optional)
+	// Legal section handlers
 	const handlePrivacyPolicyPress = useCallback(() => {
-		// TODO: Open privacy policy (webview or external browser)
+		/* AI-INSTRUCTION-START:privacy-policy
+		 * Open your privacy policy (webview or external browser)
+		 * AI-INSTRUCTION-END */
 		console.log("Privacy Policy pressed");
 	}, []);
 
 	const handleTermsOfServicePress = useCallback(() => {
-		// TODO: Open terms of service (webview or external browser)
+		/* AI-INSTRUCTION-START:terms-of-service
+		 * Open your terms of service (webview or external browser)
+		 * AI-INSTRUCTION-END */
 		console.log("Terms of Service pressed");
 	}, []);
 
 	const handleLicensesPress = useCallback(() => {
-		// TODO: Open licenses screen showing all third-party licenses
+		/* AI-INSTRUCTION-START:licenses
+		 * Open licenses screen showing third-party licenses
+		 * AI-INSTRUCTION-END */
 		console.log("Licenses pressed");
 	}, []);
 
@@ -93,10 +108,6 @@ export function SettingsScreen() {
 		<SettingsDrawer
 			visible={true}
 			onClose={handleDrawerClose}
-			batterySaverMode={settingsState.batterySaver}
-			nightProcessingMode={settingsState.nightProcessing}
-			onBatterySaverToggle={handleBatterySaverToggle}
-			onNightProcessingToggle={handleNightProcessingToggle}
 			theme={settingsState.theme}
 			onThemeChange={handleThemeChange}
 			onClearCache={handleClearCache}

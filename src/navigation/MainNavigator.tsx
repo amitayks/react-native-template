@@ -1,206 +1,106 @@
-import React, { useCallback, useEffect } from "react";
-import { StyleSheet, BackHandler } from "react-native";
-import { useNavigation } from "@contexts/NavigationContext";
-import { useSearch } from "@contexts/SearchContext";
-import { HorizontalPageContainer } from "@components/organisms/HorizontalPageContainer";
-import { AnimatedBottomNav } from "@components/molecules/AnimatedBottomNav";
-import { SettingsDrawer } from "@components/organisms/SettingsDrawer";
-import { MainScreen } from "@screens/Main/MainScreen";
-import { AlbumsScreen } from "@screens/Albums/AlbumsScreen";
-import { useSettings, type Theme } from "@contexts/SettingsContext";
-import DeviceInfo from "react-native-device-info";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HomeScreen } from "@screens/Home/HomeScreen";
+import { SettingsScreen } from "@screens/Settings/SettingsScreen";
+import { Icon } from "@components/atoms/Icon";
+import { useTheme } from "@theme/useTheme";
 
-/**
- * MainNavigator - The new custom navigation system
+/* AI-INSTRUCTION-START:main-navigator
+ * This is the main navigation structure for your app.
  *
- * Architecture:
- * - HorizontalPageContainer: Swipeable pages (Main ↔ Albums)
- * - AnimatedBottomNav: Bottom navigation with search mode animation
- * - SettingsDrawer: Settings overlay drawer
+ * CUSTOMIZATION REQUIRED:
+ * 1. Add your app's main screens to the tab navigator
+ * 2. Configure tab bar icons and labels
+ * 3. Add additional navigators if needed (Stack, Drawer, etc.)
+ * 4. Customize tab bar styling to match your brand
  *
- * Navigation flow:
- * - Main page ← swipe → Albums page
- * - Search button → Activates search mode (integrated in MainScreen)
- * - Settings button → Opens settings drawer
- * - Document button → Toggles filter on Main, navigates to Main from Albums
- * - Albums button → Jump to Albums page
- */
+ * Current Setup:
+ * - Bottom Tab Navigator with Home and Settings
+ * - Theme-aware styling
+ * - Icon-based navigation
+ *
+ * OpenSpec Reference: specs/navigation/spec.md
+ * AI Instructions: openspec/ai-instructions/navigation-configuration.md
+ * AI-INSTRUCTION-END */
+
+export type MainTabParamList = {
+	Home: undefined;
+	Settings: undefined;
+	/* AI-INSTRUCTION-START:tab-params
+	 * Add your additional screens here:
+	 * Example:
+	 * Profile: { userId: string };
+	 * Notifications: undefined;
+	 * AI-INSTRUCTION-END */
+};
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
+
 export function MainNavigator() {
-	const {
-		state: navState,
-		dispatch: navDispatch,
-		goToAlbums,
-		toggleSearch,
-		toggleDocuments,
-		toggleSettings,
-	} = useNavigation();
-	const { state: searchState, dispatch: searchDispatch } = useSearch();
-	const { state: settingsState, dispatch: settingsDispatch } = useSettings();
-
-	// Get app version for settings
-	const appVersion = DeviceInfo.getVersion();
-
-	// Handle search query change
-	const handleSearchQueryChange = useCallback(
-		(text: string) => {
-			searchDispatch({ type: "SET_SEARCH_QUERY", payload: text });
-		},
-		[searchDispatch],
-	);
-
-	// Handle search submit
-	const handleSearchSubmit = useCallback(() => {
-		// Search is automatically triggered by MainScreen when query changes
-		console.log("Search submitted");
-	}, []);
-
-	// Handle search close
-	const handleSearchClose = useCallback(() => {
-		searchDispatch({ type: "CLEAR_SEARCH" });
-		navDispatch({ type: "DEACTIVATE_SEARCH_MODE" });
-	}, [searchDispatch, navDispatch]);
-
-	// Settings handlers
-	const handleSettingsClose = useCallback(() => {
-		navDispatch({ type: "CLOSE_SETTINGS_DRAWER" });
-	}, [navDispatch]);
-
-	const handleBatterySaverToggle = useCallback(() => {
-		settingsDispatch({ type: "TOGGLE_BATTERY_SAVER" });
-	}, [settingsDispatch]);
-
-	const handleNightProcessingToggle = useCallback(() => {
-		settingsDispatch({ type: "TOGGLE_NIGHT_PROCESSING" });
-	}, [settingsDispatch]);
-
-	const handleThemeChange = useCallback(
-		(theme: Theme) => {
-			settingsDispatch({ type: "SET_THEME", payload: theme });
-		},
-		[settingsDispatch],
-	);
-
-	const handleClearCache = useCallback(async () => {
-		try {
-			// TODO: Implement actual cache clearing logic
-			console.log("Clearing cache...");
-			await new Promise((resolve) => setTimeout(resolve, 500));
-			console.log("Cache cleared successfully");
-		} catch (error) {
-			console.error("Failed to clear cache:", error);
-		}
-	}, []);
-
-	const handleDeleteAllData = useCallback(async () => {
-		try {
-			// TODO: Implement complete data deletion
-			console.log("Deleting all data...");
-			settingsDispatch({ type: "RESET_SETTINGS" });
-			await new Promise((resolve) => setTimeout(resolve, 500));
-			console.log("All data deleted successfully");
-		} catch (error) {
-			console.error("Failed to delete data:", error);
-		}
-	}, [settingsDispatch]);
-
-	const handlePrivacyPolicyPress = useCallback(() => {
-		console.log("Privacy Policy pressed");
-	}, []);
-
-	const handleTermsOfServicePress = useCallback(() => {
-		console.log("Terms of Service pressed");
-	}, []);
-
-	const handleLicensesPress = useCallback(() => {
-		console.log("Licenses pressed");
-	}, []);
-
-	// Android back button handler
-	useEffect(() => {
-		const backHandler = BackHandler.addEventListener(
-			"hardwareBackPress",
-			() => {
-				// Priority order: Search mode > Settings drawer
-				// Child screens (MainScreen) handle their own drawers
-
-				if (navState.searchMode) {
-					// Close search mode
-					handleSearchClose();
-					return true; // Prevent default back behavior
-				}
-
-				if (navState.settingsDrawerOpen) {
-					// Close settings drawer
-					handleSettingsClose();
-					return true; // Prevent default back behavior
-				}
-
-				// Let the system handle back (exit app or go to previous screen)
-				return false;
-			},
-		);
-
-		return () => backHandler.remove();
-	}, [navState.searchMode, navState.settingsDrawerOpen, handleSearchClose, handleSettingsClose]);
+	const { colors } = useTheme();
 
 	return (
-		<>
-			{/* Horizontal swipeable pages: Main ↔ Albums */}
-			<HorizontalPageContainer
-				mainPage={<MainScreen />}
-				albumsPage={<AlbumsScreen />}
-				style={styles.pageContainer}
+		<Tab.Navigator
+			screenOptions={{
+				headerShown: false,
+				tabBarActiveTintColor: colors.primary,
+				tabBarInactiveTintColor: colors.textSecondary,
+				tabBarStyle: {
+					backgroundColor: colors.surface,
+					borderTopColor: colors.border,
+					borderTopWidth: 1,
+				},
+				/* AI-INSTRUCTION-START:tab-bar-options
+				 * Customize tab bar appearance here:
+				 * - Style, positioning, animations
+				 * - Badge notifications
+				 * - Custom tab bar component
+				 * AI-INSTRUCTION-END */
+			}}
+		>
+			<Tab.Screen
+				name="Home"
+				component={HomeScreen}
+				options={{
+					tabBarIcon: ({ color, size }) => (
+						<Icon name="home" color={color} size={size} />
+					),
+					tabBarLabel: "Home",
+				}}
 			/>
 
-			{/* Animated Bottom Navigation */}
-			<AnimatedBottomNav
-				searchMode={navState.searchMode}
-				documentMode={navState.documentMode}
-				currentPage={navState.currentPage}
-				searchQuery={searchState.searchQuery}
-				onSearchQueryChange={handleSearchQueryChange}
-				onSearchSubmit={handleSearchSubmit}
-				onSearchPress={toggleSearch}
-				onDocumentsPress={toggleDocuments}
-				onAlbumsPress={goToAlbums}
-				onSettingsPress={toggleSettings}
-				onSearchClose={handleSearchClose}
-				style={styles.bottomNav}
-				testID="main-bottom-nav"
-			/>
+			{/* AI-INSTRUCTION-START:additional-tabs
+			 * Add your additional tab screens here:
+			 * Example:
+			 * <Tab.Screen
+			 *   name="Profile"
+			 *   component={ProfileScreen}
+			 *   options={{
+			 *     tabBarIcon: ({ color, size }) => (
+			 *       <Icon name="account" color={color} size={size} />
+			 *     ),
+			 *     tabBarLabel: "Profile",
+			 *   }}
+			 * />
+			 * AI-INSTRUCTION-END */}
 
-			{/* Settings Drawer Overlay */}
-			{navState.settingsDrawerOpen && (
-				<SettingsDrawer
-					visible={navState.settingsDrawerOpen}
-					onClose={handleSettingsClose}
-					batterySaverMode={settingsState.batterySaver}
-					nightProcessingMode={settingsState.nightProcessing}
-					onBatterySaverToggle={handleBatterySaverToggle}
-					onNightProcessingToggle={handleNightProcessingToggle}
-					theme={settingsState.theme}
-					onThemeChange={handleThemeChange}
-					onClearCache={handleClearCache}
-					onDeleteAllData={handleDeleteAllData}
-					appVersion={appVersion}
-					onPrivacyPolicyPress={handlePrivacyPolicyPress}
-					onTermsOfServicePress={handleTermsOfServicePress}
-					onLicensesPress={handleLicensesPress}
-					style={styles.settingsDrawer}
-				/>
-			)}
-		</>
+			<Tab.Screen
+				name="Settings"
+				component={SettingsScreen}
+				options={{
+					tabBarIcon: ({ color, size }) => (
+						<Icon name="cog" color={color} size={size} />
+					),
+					tabBarLabel: "Settings",
+				}}
+			/>
+		</Tab.Navigator>
 	);
 }
 
 const styles = StyleSheet.create({
-	pageContainer: {
-		flex: 1,
-	},
-	bottomNav: {
-		// AnimatedBottomNav handles its own positioning
-	},
-	settingsDrawer: {
-		flex: 1,
-	},
+	/* AI-INSTRUCTION-START:navigator-styles
+	 * Add custom styles for your navigator here if needed
+	 * AI-INSTRUCTION-END */
 });

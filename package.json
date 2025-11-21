@@ -1,15 +1,22 @@
 {
-	"name": "visara",
-	"version": "2.0.0",
+	"name": "{{PACKAGE_NAME}}",
+	"version": "1.0.0",
+	"description": "{{APP_DESCRIPTION}}",
 	"private": true,
-	"codegenConfig": {
-		"name": "MediaObserverSpec",
-		"type": "modules",
-		"jsSrcsDir": "src/specs",
-		"android": {
-			"javaPackageName": "com.visara.mediaobserver"
-		}
+	"keywords": [
+		"react-native",
+		"template",
+		"typescript",
+		"watermelondb",
+		"atomic-design",
+		"openspec"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/amitayks/react-native-template"
 	},
+	"author": "{{AUTHOR_NAME}}",
+	"license": "MIT",
 	"scripts": {
 		"android": "react-native run-android",
 		"ios": "react-native run-ios",

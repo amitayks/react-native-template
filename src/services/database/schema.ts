@@ -1,83 +1,39 @@
 import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
+/* AI-INSTRUCTION-START:database-schema
+ * This is the WatermelonDB schema definition for your app's database.
+ *
+ * CUSTOMIZATION REQUIRED:
+ * 1. Update version number when making schema changes
+ * 2. Replace the placeholder '{{TABLE_NAME}}' table with your domain entities
+ * 3. Add columns based on your Item model fields
+ * 4. Create additional tables for other models
+ * 5. Set up proper indexes for frequently queried columns
+ * 6. Define foreign keys for relationships
+ *
+ * Schema Migration:
+ * - When changing schema, increment version and add migration steps
+ * - See WatermelonDB docs: https://watermelondb.dev/docs/Schema/migrations
+ *
+ * OpenSpec Reference: specs/data-layer/spec.md
+ * AI Instructions: openspec/ai-instructions/data-model-creation.md
+ * AI-INSTRUCTION-END */
+
 export const schema = appSchema({
 	version: 1,
 	tables: [
+		// Placeholder table - replace with your domain entities
 		tableSchema({
-			name: "media_files",
-			columns: [
-				{ name: "uri", type: "string", isIndexed: true },
-				{ name: "filename", type: "string", isIndexed: true },
-				{ name: "mime_type", type: "string" },
-				{ name: "width", type: "number" },
-				{ name: "height", type: "number" },
-				{ name: "file_size", type: "number" },
-				{ name: "creation_date", type: "number", isIndexed: true },
-				{ name: "modification_date", type: "number" },
-				{ name: "latitude", type: "number", isOptional: true },
-				{ name: "longitude", type: "number", isOptional: true },
-				{ name: "is_processed", type: "boolean", isIndexed: true },
-				{ name: "is_favorite", type: "boolean", isIndexed: true },
-				{ name: "is_hidden", type: "boolean", isIndexed: true },
-				{ name: "thumbnail_uri", type: "string", isOptional: true },
-				{ name: "created_at", type: "number" },
-				{ name: "updated_at", type: "number" },
-			],
-		}),
-		tableSchema({
-			name: "labels",
-			columns: [
-				{ name: "media_file_id", type: "string", isIndexed: true },
-				{ name: "label", type: "string", isIndexed: true },
-				{ name: "confidence", type: "number" },
-				{ name: "created_at", type: "number" },
-			],
-		}),
-		tableSchema({
-			name: "ocr_texts",
-			columns: [
-				{ name: "media_file_id", type: "string", isIndexed: true },
-				{ name: "text", type: "string", isIndexed: true },
-				{ name: "blocks", type: "string", isOptional: true },
-				{ name: "language", type: "string", isOptional: true },
-				{ name: "confidence", type: "number" },
-				{ name: "created_at", type: "number" },
-			],
-		}),
-		tableSchema({
-			name: "albums",
+			name: "{{TABLE_NAME}}", // e.g., 'tasks', 'products', 'users'
 			columns: [
 				{ name: "name", type: "string", isIndexed: true },
 				{ name: "description", type: "string", isOptional: true },
-				{ name: "cover_media_id", type: "string", isOptional: true },
-				{ name: "is_smart", type: "boolean", isIndexed: true },
-				{ name: "smart_criteria", type: "string", isOptional: true },
-				{ name: "sort_order", type: "number" },
-				{ name: "created_at", type: "number" },
-				{ name: "updated_at", type: "number" },
-			],
-		}),
-		tableSchema({
-			name: "album_media",
-			columns: [
-				{ name: "album_id", type: "string", isIndexed: true },
-				{ name: "media_file_id", type: "string", isIndexed: true },
-				{ name: "sort_order", type: "number" },
-				{ name: "added_at", type: "number" },
-			],
-		}),
-		tableSchema({
-			name: "processing_queue",
-			columns: [
-				{ name: "media_file_id", type: "string", isIndexed: true },
 				{ name: "status", type: "string", isIndexed: true },
-				{ name: "priority", type: "number", isIndexed: true },
-				{ name: "retry_count", type: "number" },
-				{ name: "error_message", type: "string", isOptional: true },
 				{ name: "created_at", type: "number" },
 				{ name: "updated_at", type: "number" },
 			],
 		}),
+		// App settings table - keep this for general app configuration
 		tableSchema({
 			name: "app_settings",
 			columns: [
