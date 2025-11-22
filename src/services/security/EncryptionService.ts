@@ -2,7 +2,22 @@ import * as Keychain from "react-native-keychain";
 import QuickCrypto from "react-native-quick-crypto";
 import { storage } from "@services/storage/mmkv";
 
-const ENCRYPTION_KEY_ALIAS = "visara_encryption_key";
+/* AI-INSTRUCTION-START:encryption-key-alias
+ * Encryption Key Identifiers
+ *
+ * CUSTOMIZATION REQUIRED:
+ * Replace {{PACKAGE_NAME}} with your app's package name (e.g., 'com.mycompany.myapp')
+ *
+ * The ENCRYPTION_KEY_ALIAS is used to store the encryption key in Keychain (iOS)
+ * or Keystore (Android). It must be unique to your app.
+ *
+ * Example:
+ *   const ENCRYPTION_KEY_ALIAS = "com_myapp_encryption_key";
+ *
+ * Note: Changing this after app release will make existing encrypted data inaccessible.
+ * AI-INSTRUCTION-END */
+
+const ENCRYPTION_KEY_ALIAS = "{{PACKAGE_NAME}}_encryption_key";
 const ENCRYPTION_KEY_GENERATED_FLAG = "encryption_key_generated";
 
 /**

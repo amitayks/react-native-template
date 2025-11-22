@@ -33,11 +33,24 @@
     <!-- Notification permissions for API 33+ (Android 13+) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- AI-INSTRUCTION-START:android-app-icons
+     * App Icon Configuration
+     *
+     * CUSTOMIZATION REQUIRED:
+     * Replace 'app_launcher' with your app's icon name
+     * Icon files should be placed in:
+     *   - android/app/src/main/res/mipmap-hdpi/
+     *   - android/app/src/main/res/mipmap-mdpi/
+     *   - android/app/src/main/res/mipmap-xhdpi/
+     *   - android/app/src/main/res/mipmap-xxhdpi/
+     *   - android/app/src/main/res/mipmap-xxxhdpi/
+     *
+     * AI-INSTRUCTION-END -->
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
-      android:icon="@mipmap/visara_launcher"
-      android:roundIcon="@mipmap/visara_launcher"
+      android:icon="@mipmap/app_launcher"
+      android:roundIcon="@mipmap/app_launcher"
       android:allowBackup="false"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="${usesCleartextTraffic}"
@@ -61,9 +74,16 @@
         android:exported="false"
         android:foregroundServiceType="dataSync" />
 
-      <!-- HeadlessJS service for background media scanning -->
-      <service
-        android:name="com.visara.backgroundtask.BackgroundScanService"
-        android:exported="false" />
+      <!-- AI-INSTRUCTION-START:android-services
+       * Custom Android Services
+       *
+       * CUSTOMIZATION:
+       * Add your custom services here if needed
+       * Example:
+       * <service
+       *   android:name=".YourCustomService"
+       *   android:exported="false" />
+       *
+       * AI-INSTRUCTION-END -->
     </application>
 </manifest>

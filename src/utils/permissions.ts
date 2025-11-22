@@ -96,21 +96,35 @@ function getPermissionName(type: PermissionType): string {
 	}
 }
 
+/* AI-INSTRUCTION-START:permission-rationale
+ * Permission rationale messages
+ *
+ * CUSTOMIZATION REQUIRED:
+ * Replace these generic messages with your app-specific rationale
+ * Explain clearly why your app needs each permission
+ *
+ * Note: These messages are shown to users when requesting permissions
+ * Make them specific to your app's actual functionality
+ *
+ * AI-INSTRUCTION-END */
+
 /**
  * Get permission rationale message
  */
 function getPermissionRationale(type: PermissionType): string {
+	const appName = "{{APP_NAME}}"; // Replace with getProjectInfo().displayName from templateConfig
+
 	switch (type) {
 		case PermissionType.CAMERA:
-			return "Visara needs camera access to capture new photos that will be automatically processed and organized in your gallery.";
+			return `${appName} needs camera access to capture photos and videos.`;
 		case PermissionType.PHOTO_LIBRARY:
-			return "Visara needs access to your photos to discover, process, and organize your images with AI-powered search capabilities.";
+			return `${appName} needs access to your photo library to view and manage your media.`;
 		case PermissionType.STORAGE_READ:
-			return "Visara needs storage access to read your photos and documents for AI processing.";
+			return `${appName} needs storage access to read files and media from your device.`;
 		case PermissionType.STORAGE_WRITE:
-			return "Visara needs storage access to save processed metadata and thumbnails locally on your device.";
+			return `${appName} needs storage access to save files and data on your device.`;
 		case PermissionType.NOTIFICATIONS:
-			return "Visara uses notifications to show AI processing progress in the background and keep you informed.";
+			return `${appName} uses notifications to keep you informed about important updates.`;
 	}
 }
 
@@ -133,7 +147,7 @@ export async function checkPermission(
 	try {
 		if (Platform.OS === "android") {
 			if (typeof permission === "string") {
-				const result = await PermissionsAndroid.check(permission);
+				const result = await PermissionsAndroid.check(permission as any);
 				if (result) {
 					return {
 						status: PermissionStatus.GRANTED,
@@ -151,7 +165,7 @@ export async function checkPermission(
 
 		// iOS - use react-native-permissions
 		if (typeof permission === "string") {
-			const result = await check(permission as Permission);
+			const result = await check(permission as any);
 			switch (result) {
 				case RESULTS.GRANTED:
 					return {
@@ -226,7 +240,7 @@ export async function requestPermission(
 			if (typeof permission === "string") {
 				console.log(`[Permissions] Calling PermissionsAndroid.request for ${permission}`);
 
-				const result = await PermissionsAndroid.request(permission, {
+				const result = await PermissionsAndroid.request(permission as any, {
 					title: `${getPermissionName(type)} Permission`,
 					message: getPermissionRationale(type),
 					buttonNeutral: "Ask Me Later",
@@ -280,7 +294,7 @@ export async function requestPermission(
 						{
 							text: "Allow",
 							onPress: async () => {
-								const result = await request(permission as Permission);
+								const result = await request(permission as any);
 								resolve(mapIOSResultToPermissionResult(type, result));
 							},
 						},
@@ -289,7 +303,7 @@ export async function requestPermission(
 			});
 		}
 
-		const result = await request(permission as Permission);
+		const result = await request(permission as any);
 		return mapIOSResultToPermissionResult(type, result);
 	} catch (error) {
 		console.error(`Error requesting ${type} permission:`, error);
@@ -358,9 +372,10 @@ export function showPermissionDeniedAlert(
 	type: PermissionType,
 	onCancel?: () => void,
 ): void {
+	const appName = "{{APP_NAME}}";
 	Alert.alert(
 		`${getPermissionName(type)} Access Required`,
-		`Visara needs ${getPermissionName(type).toLowerCase()} access to function properly. Please grant permission in Settings.`,
+		`${appName} needs ${getPermissionName(type).toLowerCase()} access to function properly. Please grant permission in Settings.`,
 		[
 			{
 				text: "Cancel",
@@ -412,16 +427,17 @@ export async function checkAllPermissions(
 export function getGracefulDegradationMessage(
 	type: PermissionType,
 ): string | null {
+	const appName = "{{APP_NAME}}";
 	switch (type) {
 		case PermissionType.CAMERA:
-			return "You can still browse and search your existing photos, but you won't be able to capture new photos from within the app.";
+			return "You can still use the app, but you won't be able to capture photos from within the app.";
 		case PermissionType.PHOTO_LIBRARY:
-			return "Without photo library access, Visara cannot discover or process your photos. Please grant permission to use the app.";
+			return `Without photo library access, ${appName} cannot access your photos. Please grant permission to use this feature.`;
 		case PermissionType.STORAGE_READ:
-			return "Without storage access, Visara cannot read your photos. Please grant permission to use the app.";
+			return `Without storage access, ${appName} cannot read files from your device. Please grant permission to use this feature.`;
 		case PermissionType.STORAGE_WRITE:
-			return "Without storage access, Visara cannot save processed data. Processing will be disabled until permission is granted.";
+			return `Without storage access, ${appName} cannot save data. Some features will be disabled until permission is granted.`;
 		case PermissionType.NOTIFICATIONS:
-			return "You won't receive notifications about AI processing progress, but the app will continue to work normally.";
+			return "You won't receive notifications, but the app will continue to work normally.";
 	}
 }

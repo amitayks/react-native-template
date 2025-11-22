@@ -1,7 +1,8 @@
 {
-	"name": "Visara",
-	"displayName": "Visara",
-	"description": "AI Gallery App",
-	"version": "2.0.0",
-	"author": "Amitay Keisar"
+	"$comment": "AI-INSTRUCTION: CRITICAL CUSTOMIZATION - The 'name' field MUST be a valid JavaScript identifier (no spaces, no special characters) and MUST match MainActivity.kt's getMainComponentName(). Change 'AppTemplate' to your app's name (e.g., 'MyApp'). The 'displayName' is the user-facing name shown on the home screen.",
+	"name": "AppTemplate",
+	"displayName": "{{APP_NAME}}",
+	"description": "{{APP_DESCRIPTION}}",
+	"version": "1.0.0",
+	"author": "{{AUTHOR_NAME}}"
 }

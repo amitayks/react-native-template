@@ -1,3 +1,14 @@
+<!-- AI-INSTRUCTION-START:android-app-name
+ * Android App Name
+ *
+ * CUSTOMIZATION REQUIRED:
+ * Replace {{APP_NAME}} with your app's display name
+ *
+ * This is the name shown under your app icon on the home screen
+ * and in the app switcher.
+ *
+ * Example: <string name="app_name">MyApp</string>
+ * AI-INSTRUCTION-END -->
 <resources>
-    <string name="app_name">Visara</string>
+    <string name="app_name">{{APP_NAME}}</string>
 </resources>

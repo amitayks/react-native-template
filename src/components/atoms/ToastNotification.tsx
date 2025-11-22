@@ -4,8 +4,6 @@ import type { ToastConfigParams } from "react-native-toast-message";
 import { Icon } from "./Icon";
 import { useTheme } from "@theme/useTheme";
 import {
-	Colors,
-	Shadows,
 	BorderRadius,
 	Typography,
 	Spacing,

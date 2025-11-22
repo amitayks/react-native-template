@@ -13,7 +13,6 @@ import {
 	Dimensions,
 	ScrollView,
 	StyleSheet,
-	Switch,
 	Text,
 	TouchableOpacity,
 	View,

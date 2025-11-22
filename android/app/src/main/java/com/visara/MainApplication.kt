@@ -1,3 +1,16 @@
+/* AI-INSTRUCTION-START:android-package-name-application
+ * Android Package Name Configuration
+ *
+ * CRITICAL CUSTOMIZATION REQUIRED:
+ * 1. Replace 'com.visara.app' with your app's package name
+ * 2. Replace 'com.visara.MemoryPackage' import with your package name
+ * 3. This must match the package name in MainActivity.kt
+ *
+ * Example: If your package is 'com.mycompany.myapp':
+ *   - package com.mycompany.myapp
+ *   - import com.mycompany.myapp.MemoryPackage
+ *
+ * AI-INSTRUCTION-END */
 package com.visara.app
 
 import android.app.Application

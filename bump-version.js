@@ -80,7 +80,7 @@ try {
 	const pbxprojPath = path.join(
 		__dirname,
 		"ios",
-		"VisaraApp.xcodeproj",
+		"{{PACKAGE_NAME}}.xcodeproj",
 		"project.pbxproj",
 	);
 
@@ -117,8 +117,8 @@ try {
 // 5. Update iOS Info.plist files (fallback if not using Xcode variables)
 try {
 	const infoPlistPaths = [
-		path.join(__dirname, "ios", "VisaraApp", "Info.plist"),
-		path.join(__dirname, "ios", "VisaraAppTests", "Info.plist"),
+		path.join(__dirname, "ios", "{{PACKAGE_NAME}}", "Info.plist"),
+		path.join(__dirname, "ios", "{{PACKAGE_NAME}}Test", "Info.plist"),
 	];
 
 	const [major, minor, patch] = newVersion.split(".").map(Number);

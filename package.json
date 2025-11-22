@@ -1,7 +1,7 @@
 {
-	"name": "{{PACKAGE_NAME}}",
+	"name": "app-template",
 	"version": "1.0.0",
-	"description": "{{APP_DESCRIPTION}}",
+	"description": "React Native app template with TypeScript, WatermelonDB, and OpenSpec",
 	"private": true,
 	"keywords": [
 		"react-native",

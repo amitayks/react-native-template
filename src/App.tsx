@@ -1,7 +1,7 @@
 import { toastConfig } from "@components/atoms/ToastNotification";
 import { ErrorBoundary } from "@components/ErrorBoundary";
 import { NavigationProvider } from "@contexts/NavigationContext";
-import { SettingsProvider, useSettings } from "@contexts/SettingsContext";
+import { SettingsProvider } from "@contexts/SettingsContext";
 import { ToastProvider } from "@contexts/ToastContext";
 import { useDatabase } from "@hooks/useDatabase";
 import { RootNavigator } from "@navigation/RootNavigator";
@@ -34,10 +34,9 @@ import Toast from "react-native-toast-message";
  */
 function AppContent(): React.JSX.Element {
 	const colorScheme = useColorScheme();
-	const { state } = useSettings();
 
 	// Initialize database
-	const { isReady: dbReady } = useDatabase();
+	useDatabase();
 
 	/* AI-INSTRUCTION-START:app-initialization
 	 * Add your app initialization logic here:

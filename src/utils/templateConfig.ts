@@ -82,10 +82,13 @@ export interface TemplateConfig {
 
 /**
  * Get the full template configuration
+ *
+ * Note: The template.config.json may contain additional properties for documentation
+ * (like $comment fields) that are not part of the TypeScript interface.
+ * These are filtered out at runtime and don't affect type safety.
  */
 export function getTemplateConfig(): TemplateConfig {
-	// @ts-ignore - Config has additional properties for documentation
-	return templateConfig;
+	return templateConfig as unknown as TemplateConfig;
 }
 
 /**
@@ -99,7 +102,8 @@ export function isTemplateConfigured(): boolean {
  * Check if a specific feature is enabled
  */
 export function isFeatureEnabled(featureName: string): boolean {
-	const feature = templateConfig.features[featureName];
+	const features = templateConfig.features as unknown as Record<string, { enabled: boolean }>;
+	const feature = features[featureName];
 	return feature?.enabled ?? false;
 }
 
@@ -107,8 +111,9 @@ export function isFeatureEnabled(featureName: string): boolean {
  * Get all enabled features
  */
 export function getEnabledFeatures(): string[] {
-	return Object.entries(templateConfig.features)
-		.filter(([_, feature]) => feature.enabled)
+	const features = templateConfig.features as unknown as Record<string, { enabled: boolean }>;
+	return Object.entries(features)
+		.filter(([key, feature]) => key !== 'comment' && typeof feature === 'object' && feature.enabled)
 		.map(([name]) => name);
 }
 

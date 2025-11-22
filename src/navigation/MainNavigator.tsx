@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HomeScreen } from "@screens/Home/HomeScreen";
 import { SettingsScreen } from "@screens/Settings/SettingsScreen";
@@ -98,9 +97,3 @@ export function MainNavigator() {
 		</Tab.Navigator>
 	);
 }
-
-const styles = StyleSheet.create({
-	/* AI-INSTRUCTION-START:navigator-styles
-	 * Add custom styles for your navigator here if needed
-	 * AI-INSTRUCTION-END */
-});
