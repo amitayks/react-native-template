@@ -84,7 +84,8 @@ export interface TemplateConfig {
  * Get the full template configuration
  */
 export function getTemplateConfig(): TemplateConfig {
-	return templateConfig as TemplateConfig;
+	// @ts-ignore - Config has additional properties for documentation
+	return templateConfig;
 }
 
 /**

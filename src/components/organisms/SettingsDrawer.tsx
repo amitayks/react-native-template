@@ -29,14 +29,20 @@ import Animated, {
 
 type Theme = "light" | "dark" | "system";
 
+/* AI-INSTRUCTION-START:settings-drawer-props
+ * Settings Drawer Props interface
+ *
+ * CUSTOMIZATION:
+ * Add your app-specific settings props here
+ * Example:
+ * - notifications: boolean;
+ * - onNotificationsToggle: (enabled: boolean) => void;
+ *
+ * AI-INSTRUCTION-END */
+
 interface SettingsDrawerProps {
 	visible: boolean;
 	onClose: () => void;
-	// Processing settings
-	batterySaverMode: boolean;
-	nightProcessingMode: boolean;
-	onBatterySaverToggle: (enabled: boolean) => void;
-	onNightProcessingToggle: (enabled: boolean) => void;
 	// Appearance
 	theme: Theme;
 	onThemeChange: (theme: Theme) => void;
@@ -55,10 +61,6 @@ interface SettingsDrawerProps {
 export function SettingsDrawer({
 	visible,
 	onClose,
-	batterySaverMode,
-	nightProcessingMode,
-	onBatterySaverToggle,
-	onNightProcessingToggle,
 	theme,
 	onThemeChange,
 	onClearCache,
@@ -194,62 +196,23 @@ export function SettingsDrawer({
 
 				{/* Content */}
 				<ScrollView style={styles.content} showsVerticalScrollIndicator={true}>
-					{/* Processing Settings Section */}
-					<View style={styles.section}>
-						<Text style={[styles.sectionTitle, { color: colors.text }]}>
-							Processing
-						</Text>
-
-						<View style={styles.settingRow}>
-							<View style={styles.settingInfo}>
-								<Text style={[styles.settingLabel, { color: colors.text }]}>
-									Battery Saver Mode
-								</Text>
-								<Text
-									style={[
-										styles.settingDescription,
-										{ color: colors.textSecondary },
-									]}
-								>
-									Pause processing when device is not charging
-								</Text>
-							</View>
-							<Switch
-								value={batterySaverMode}
-								onValueChange={onBatterySaverToggle}
-								trackColor={{
-									false: colors.border,
-									true: colors.buttonPrimary,
-								}}
-								thumbColor={colors.surface}
-							/>
-						</View>
-
-						<View style={styles.settingRow}>
-							<View style={styles.settingInfo}>
-								<Text style={[styles.settingLabel, { color: colors.text }]}>
-									Night Processing
-								</Text>
-								<Text
-									style={[
-										styles.settingDescription,
-										{ color: colors.textSecondary },
-									]}
-								>
-									Only process during 00:00-06:00 time window
-								</Text>
-							</View>
-							<Switch
-								value={nightProcessingMode}
-								onValueChange={onNightProcessingToggle}
-								trackColor={{
-									false: colors.border,
-									true: colors.buttonPrimary,
-								}}
-								thumbColor={colors.surface}
-							/>
-						</View>
-					</View>
+					{/* AI-INSTRUCTION-START:settings-sections
+					 * Add your custom settings sections here
+					 * Example:
+					 * <View style={styles.section}>
+					 *   <Text style={[styles.sectionTitle, { color: colors.text }]}>
+					 *     Notifications
+					 *   </Text>
+					 *   <View style={styles.settingRow}>
+					 *     <View style={styles.settingInfo}>
+					 *       <Text style={[styles.settingLabel, { color: colors.text }]}>
+					 *         Enable Notifications
+					 *       </Text>
+					 *     </View>
+					 *     <Switch value={notifications} onValueChange={onNotificationsToggle} />
+					 *   </View>
+					 * </View>
+					 * AI-INSTRUCTION-END */}
 
 					{/* Appearance Section */}
 					<View style={styles.section}>

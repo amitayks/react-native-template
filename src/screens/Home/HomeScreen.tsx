@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '@theme/useTheme';
-import { spacing } from '@theme/colors';
+import { Spacing } from '@theme/colors';
 import { Button } from '@components/atoms/Button';
+
+const spacing = Spacing;
 
 /* AI-INSTRUCTION-START:home-screen
  * This is the main home screen of your application.
@@ -46,11 +48,11 @@ export function HomeScreen() {
 				 * Replace this placeholder header with your app's header/title
 				 * AI-INSTRUCTION-END */}
 				<Text style={[styles.title, { color: colors.text }]}>
-					{{APP_NAME}}
+					Welcome
 				</Text>
 
 				<Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-					Welcome to your new app
+					Your app starts here
 				</Text>
 
 				{/* AI-INSTRUCTION-START:home-screen-main-content
@@ -62,10 +64,11 @@ export function HomeScreen() {
 				 *
 				 * Example component usage:
 				 * <Button
-				 *   label="Add Item"
 				 *   onPress={handleAddItem}
 				 *   variant="primary"
-				 * />
+				 * >
+				 *   Add Item
+				 * </Button>
 				 * AI-INSTRUCTION-END */}
 
 				<View style={styles.placeholderContent}>
@@ -75,11 +78,12 @@ export function HomeScreen() {
 					</Text>
 
 					<Button
-						label="Example Button"
 						onPress={() => console.log('Button pressed')}
 						variant="primary"
 						style={styles.exampleButton}
-					/>
+					>
+						Example Button
+					</Button>
 				</View>
 			</View>
 		</SafeAreaView>
