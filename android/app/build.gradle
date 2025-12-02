@@ -72,29 +72,57 @@ def enableProguardInReleaseBuilds = true
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+/* AI-INSTRUCTION-START:android-build-config
+ * Android Build Configuration
+ *
+ * CRITICAL CUSTOMIZATION REQUIRED:
+ *
+ * 1. PACKAGE NAME/NAMESPACE (lines below):
+ *    - Replace "com.apptemplate" with your package (e.g., "com.mycompany.myapp")
+ *    - Must be ALL LOWERCASE
+ *    - Use DOTS only (no hyphens, underscores, or special characters)
+ *    - Should match:
+ *      * Java package structure in android/app/src/main/java/
+ *      * MainActivity.kt and MainApplication.kt package declarations
+ *      * AndroidManifest.xml package attribute
+ *
+ * 2. VERSION CODES:
+ *    - versionCode: Integer, increment for each release
+ *    - versionName: String, user-facing version (e.g., "1.0.0")
+ *
+ * 3. SIGNING CONFIG (release section below):
+ *    - For production builds, configure signing in gradle.properties:
+ *      APP_UPLOAD_STORE_FILE=/path/to/your.keystore
+ *      APP_UPLOAD_STORE_PASSWORD=your_password
+ *      APP_UPLOAD_KEY_ALIAS=your_key_alias
+ *      APP_UPLOAD_KEY_PASSWORD=your_key_password
+ *
+ * Example package name: "com.acme.todoapp"
+ * AI-INSTRUCTION-END */
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.visara.app"
+    namespace "com.apptemplate"
     defaultConfig {
-        applicationId "com.visara.app"
+        applicationId "com.apptemplate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20000
-        versionName "2.0.0"
+        versionCode 1
+        versionName "1.0.0"
 
         // Enable multidex for large apps
         multiDexEnabled true
     }
     signingConfigs {
         release {
-            if (project.hasProperty('VISARA_UPLOAD_STORE_FILE')) {
-                storeFile file(VISARA_UPLOAD_STORE_FILE)
-                storePassword VISARA_UPLOAD_STORE_PASSWORD
-                keyAlias VISARA_UPLOAD_KEY_ALIAS
-                keyPassword VISARA_UPLOAD_KEY_PASSWORD
+            if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {
+                storeFile file(APP_UPLOAD_STORE_FILE)
+                storePassword APP_UPLOAD_STORE_PASSWORD
+                keyAlias APP_UPLOAD_KEY_ALIAS
+                keyPassword APP_UPLOAD_KEY_PASSWORD
             }
         }
         debug {

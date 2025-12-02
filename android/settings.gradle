@@ -1,6 +1,18 @@
+/* AI-INSTRUCTION-START:android-project-name
+ * Android Project Name
+ *
+ * CUSTOMIZATION REQUIRED:
+ * Replace 'AppTemplate' with your app's name (e.g., 'MyApp', 'TodoApp')
+ *
+ * This is used by Gradle for project identification and build outputs.
+ * Should match the name you use throughout your project.
+ *
+ * Example: rootProject.name = 'MyTodoApp'
+ * AI-INSTRUCTION-END */
+
 pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
 plugins { id("com.facebook.react.settings") }
 extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
-rootProject.name = 'Visara'
+rootProject.name = 'AppTemplate'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')

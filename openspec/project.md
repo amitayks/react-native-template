@@ -317,6 +317,132 @@ All AI instruction blocks in the codebase reference these files:
 
 ## Example Customization Workflows
 
+### Workflow 0: Initial Template Setup (First-Time Customization)
+
+```markdown
+## Goal
+Customize the template for your specific app - this is the FIRST thing you should do when starting with this template.
+
+## Critical Files to Update
+
+### 1. App Identity & Metadata
+
+**app.json** - React Native app configuration
+- `name`: "AppTemplate" → Your app's JS component name (e.g., "MyApp")
+  - MUST match MainActivity.kt's `getMainComponentName()`
+  - Must be a valid JavaScript identifier (no spaces, no special characters)
+- `displayName`: "{{APP_NAME}}" → User-facing name (shown on home screen)
+- `description`: "{{APP_DESCRIPTION}}" → Short app description
+- `author`: "{{AUTHOR_NAME}}" → Your name or company
+
+**package.json** - npm package configuration
+- `name`: "app-template" → Your npm package name (lowercase, hyphens allowed)
+- `description`: Update to match your app
+
+### 2. Android Configuration
+
+**android/app/build.gradle** - Android build settings
+- `namespace`: "com.apptemplate" → Your package (e.g., "com.mycompany.myapp")
+- `applicationId`: "com.apptemplate" → Same as namespace
+- `versionCode`: 1 (increment for each release)
+- `versionName`: "1.0.0" (user-facing version)
+- Package name rules:
+  - All lowercase
+  - Use dots only (no hyphens, underscores, special characters)
+  - Typically: com.companyname.appname
+
+**android/settings.gradle** - Gradle project name
+- `rootProject.name`: 'AppTemplate' → Your app name
+
+**android/app/src/main/res/values/strings.xml** - Android strings
+- `app_name`: "{{APP_NAME}}" → Your app's display name
+
+**android/app/src/main/java/com/visara/** - Java/Kotlin package structure
+- Rename directory to match your package name
+- Example: com.visara → com.mycompany.myapp
+- Update all package declarations in:
+  - MainActivity.kt
+  - MainApplication.kt
+  - MemoryModule.java
+  - MemoryPackage.java
+
+**MainActivity.kt** - Main activity
+- Package declaration: `package com.visara.app` → Your package
+- Component name: `getMainComponentName()` → Return "AppTemplate" or your app name
+  - MUST match app.json "name" field exactly
+
+**MainApplication.kt** - Application class
+- Package declaration: `package com.visara.app` → Your package
+- Import statements: Update to match your package
+
+### 3. Storage & Encryption IDs
+
+**src/services/storage/mmkv.ts** - MMKV storage config
+- `id`: "{{PACKAGE_NAME}}-storage" → Your package name
+
+**src/services/security/EncryptionService.ts** - Encryption config
+- `ENCRYPTION_KEY_ALIAS`: "{{PACKAGE_NAME}}_encryption_key" → Your package name
+
+### 4. Template Configuration
+
+**template.config.json** - Complete all sections
+- Fill out all `{{PLACEHOLDER}}` values
+- Set `template.configured = true` when done
+- Configure features you want to use
+
+### 5. Icon Assets (Optional - can do later)
+
+Replace default icons in:
+- `android/app/src/main/res/mipmap-*/` - All app_launcher* files
+- `android/app/src/main/res/mipmap-anydpi-v26/app_launcher.xml` - Adaptive icon config
+
+### 6. Branding & Theme (Optional)
+
+Update colors and branding:
+- `src/theme/colors.ts` - Primary, secondary, accent colors
+- Update to match your brand guidelines
+
+## Package Name Change Checklist
+
+When changing from "com.visara.app" to your package (e.g., "com.mycompany.myapp"):
+
+- [ ] android/app/build.gradle - namespace and applicationId
+- [ ] android/settings.gradle - rootProject.name
+- [ ] Rename directory: android/app/src/main/java/com/visara/ → com/mycompany/myapp/
+- [ ] MainActivity.kt - package declaration and getMainComponentName()
+- [ ] MainApplication.kt - package declaration and imports
+- [ ] MemoryModule.java - package declaration
+- [ ] MemoryPackage.java - package declaration
+- [ ] app.json - name field
+- [ ] src/services/storage/mmkv.ts - storage ID
+- [ ] src/services/security/EncryptionService.ts - encryption key alias
+
+## Verification Steps
+
+After customization:
+
+1. **Build Check**
+   ```bash
+   npm run typecheck
+   npm run android
+   ```
+
+2. **Verify App Name**
+   - Check home screen shows correct display name
+   - Check app switcher shows correct name
+
+3. **Verify Package Name**
+   - No build errors
+   - App installs correctly
+   - No component registration errors
+
+4. **Test Core Features**
+   - Database initialization works
+   - Settings persist
+   - Navigation works
+   - Theme switching works
+```
+
 ### Workflow 1: Adding a New Screen
 
 ```markdown

@@ -2,8 +2,8 @@
  * Android Package Name Configuration
  *
  * CRITICAL CUSTOMIZATION REQUIRED:
- * 1. Replace 'com.visara.app' with your app's package name
- * 2. Replace 'com.visara.MemoryPackage' import with your package name
+ * 1. Replace 'com.apptemplate' with your app's package name (e.g., 'com.mycompany.myapp')
+ * 2. Replace 'com.apptemplate.MemoryPackage' import with your package name
  * 3. This must match the package name in MainActivity.kt
  *
  * Example: If your package is 'com.mycompany.myapp':
@@ -11,7 +11,7 @@
  *   - import com.mycompany.myapp.MemoryPackage
  *
  * AI-INSTRUCTION-END */
-package com.visara.app
+package com.apptemplate
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -22,7 +22,7 @@ import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
-import com.visara.MemoryPackage
+import com.apptemplate.MemoryPackage
 
 /* AI-INSTRUCTION-START:native-modules
  * Native module registration

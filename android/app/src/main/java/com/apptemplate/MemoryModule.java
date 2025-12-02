@@ -1,4 +1,13 @@
-package com.visara;
+/* AI-INSTRUCTION-START:native-module-package
+ * Native Module Package Declaration
+ *
+ * CUSTOMIZATION REQUIRED:
+ * Replace 'com.apptemplate' with your app's package name
+ * This must match MainActivity.kt and MainApplication.kt
+ *
+ * Example: package com.mycompany.myapp;
+ * AI-INSTRUCTION-END */
+package com.apptemplate;
 
 import android.app.ActivityManager;
 import android.content.Context;

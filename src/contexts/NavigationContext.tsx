@@ -8,8 +8,8 @@ import React, {
 
 /**
  * Navigation page indices
- * 0 = Main (PhotoGrid)
- * 1 = Albums
+ * 0 = Home
+ * 1 = Settings
  */
 export type PageIndex = 0 | 1;
 
@@ -17,14 +17,12 @@ export type PageIndex = 0 | 1;
  * Navigation state for the app
  */
 export interface NavigationState {
-	/** Current page index (0 = Main, 1 = Albums) */
+	/** Current page index (0 = Home, 1 = Settings) */
 	currentPage: PageIndex;
 	/** Whether search mode is active (search results replace main grid) */
 	searchMode: boolean;
 	/** Whether document filter mode is active */
 	documentMode: boolean;
-	/** Whether settings drawer is open */
-	settingsDrawerOpen: boolean;
 }
 
 /**
@@ -37,17 +35,13 @@ export type NavigationAction =
 	| { type: "DEACTIVATE_SEARCH_MODE" }
 	| { type: "TOGGLE_DOCUMENT_MODE" }
 	| { type: "ACTIVATE_DOCUMENT_MODE" }
-	| { type: "DEACTIVATE_DOCUMENT_MODE" }
-	| { type: "TOGGLE_SETTINGS_DRAWER" }
-	| { type: "OPEN_SETTINGS_DRAWER" }
-	| { type: "CLOSE_SETTINGS_DRAWER" };
+	| { type: "DEACTIVATE_DOCUMENT_MODE" };
 
 /** Initial navigation state */
 const initialState: NavigationState = {
-	currentPage: 0, // Start at Main page
+	currentPage: 0, // Start at Home page
 	searchMode: false,
 	documentMode: false,
-	settingsDrawerOpen: false,
 };
 
 /**
@@ -70,15 +64,12 @@ function navigationReducer(
 			return {
 				...state,
 				searchMode: !state.searchMode,
-				// Close settings drawer when entering search mode
-				settingsDrawerOpen: state.searchMode ? state.settingsDrawerOpen : false,
 			};
 
 		case "ACTIVATE_SEARCH_MODE":
 			return {
 				...state,
 				searchMode: true,
-				settingsDrawerOpen: false,
 			};
 
 		case "DEACTIVATE_SEARCH_MODE":
@@ -88,8 +79,8 @@ function navigationReducer(
 			};
 
 		case "TOGGLE_DOCUMENT_MODE":
-			// If we're on Albums page, navigate to Main and activate document mode
-			// If we're on Main page, just toggle document mode
+			// If we're on Settings page, navigate to Home and activate document mode
+			// If we're on Home page, just toggle document mode
 			if (state.currentPage === 1) {
 				return {
 					...state,
@@ -103,7 +94,7 @@ function navigationReducer(
 			};
 
 		case "ACTIVATE_DOCUMENT_MODE":
-			// Always navigate to Main when activating document mode
+			// Always navigate to Home when activating document mode
 			return {
 				...state,
 				currentPage: 0,
@@ -114,27 +105,6 @@ function navigationReducer(
 			return {
 				...state,
 				documentMode: false,
-			};
-
-		case "TOGGLE_SETTINGS_DRAWER":
-			return {
-				...state,
-				settingsDrawerOpen: !state.settingsDrawerOpen,
-				// Close search mode when opening settings drawer
-				searchMode: state.settingsDrawerOpen ? state.searchMode : false,
-			};
-
-		case "OPEN_SETTINGS_DRAWER":
-			return {
-				...state,
-				settingsDrawerOpen: true,
-				searchMode: false,
-			};
-
-		case "CLOSE_SETTINGS_DRAWER":
-			return {
-				...state,
-				settingsDrawerOpen: false,
 			};
 
 		default:
@@ -148,16 +118,14 @@ function navigationReducer(
 interface NavigationContextType {
 	state: NavigationState;
 	dispatch: React.Dispatch<NavigationAction>;
-	/** Helper: Navigate to Main page */
-	goToMain: () => void;
-	/** Helper: Navigate to Albums page */
-	goToAlbums: () => void;
+	/** Helper: Navigate to Home page */
+	goToHome: () => void;
+	/** Helper: Navigate to Settings page */
+	goToSettings: () => void;
 	/** Helper: Toggle search mode */
 	toggleSearch: () => void;
 	/** Helper: Toggle document mode */
 	toggleDocuments: () => void;
-	/** Helper: Toggle settings drawer */
-	toggleSettings: () => void;
 }
 
 /** Create navigation context */
@@ -172,11 +140,11 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 	const [state, dispatch] = useReducer(navigationReducer, initialState);
 
 	// Helper functions for common actions
-	const goToMain = useCallback(() => {
+	const goToHome = useCallback(() => {
 		dispatch({ type: "SET_PAGE", payload: 0 });
 	}, []);
 
-	const goToAlbums = useCallback(() => {
+	const goToSettings = useCallback(() => {
 		dispatch({ type: "SET_PAGE", payload: 1 });
 	}, []);
 
@@ -188,18 +156,13 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 		dispatch({ type: "TOGGLE_DOCUMENT_MODE" });
 	}, []);
 
-	const toggleSettings = useCallback(() => {
-		dispatch({ type: "TOGGLE_SETTINGS_DRAWER" });
-	}, []);
-
 	const value: NavigationContextType = {
 		state,
 		dispatch,
-		goToMain,
-		goToAlbums,
+		goToHome,
+		goToSettings,
 		toggleSearch,
 		toggleDocuments,
-		toggleSettings,
 	};
 
 	return (

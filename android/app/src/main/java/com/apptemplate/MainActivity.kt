@@ -2,19 +2,19 @@
  * Android Package Name Configuration
  *
  * CRITICAL CUSTOMIZATION REQUIRED:
- * 1. Replace 'com.visara.app' with your app's package name
+ * 1. Replace 'com.apptemplate' with your app's package name (e.g., 'com.mycompany.myapp')
  * 2. Rename the directory structure from:
  *    android/app/src/main/java/com/visara/
  *    to match your package (e.g., android/app/src/main/java/com/mycompany/myapp/)
  * 3. Update AndroidManifest.xml package attribute
- * 4. Update build.gradle applicationId
+ * 4. Update build.gradle applicationId to match
  *
  * Example: If your package is 'com.mycompany.myapp':
  *   - package com.mycompany.myapp
  *   - Directory: android/app/src/main/java/com/mycompany/myapp/
  *
  * AI-INSTRUCTION-END */
-package com.visara.app
+package com.apptemplate
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

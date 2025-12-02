@@ -322,7 +322,7 @@ export class NotificationService {
 				android: {
 					channelId: this.channelId,
 					color: totalFailed > 0 ? AndroidColor.YELLOW : AndroidColor.GREEN,
-					smallIcon: "visara_launcher_monochrome",
+					smallIcon: "app_launcher_monochrome",
 					pressAction: {
 						id: "default",
 					},

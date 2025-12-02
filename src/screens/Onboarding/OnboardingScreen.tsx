@@ -111,11 +111,7 @@ export function OnboardingScreen() {
 						{ backgroundColor: colors.buttonPrimary },
 					]}
 				>
-					<Icon
-						name="application"
-						size={80}
-						color={colors.buttonPrimaryText}
-					/>
+					<Icon name="application" size={80} color={colors.buttonPrimaryText} />
 				</View>
 
 				{/* App Name */}
