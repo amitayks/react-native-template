@@ -85,28 +85,13 @@ export function BottomNavContainer({
 		const button1 = buttonLayouts[1];
 
 		// Interpolate position and width between the two buttons
-		const translateX = interpolate(
-			progress,
-			[0, 1],
-			[button0.x, button1.x],
-		);
+		const translateX = interpolate(progress, [0, 1], [button0.x, button1.x]);
 
-		const width = interpolate(
-			progress,
-			[0, 1],
-			[button0.width, button1.width],
-		);
-
-		const height = interpolate(
-			progress,
-			[0, 1],
-			[button0.height, button1.height],
-		);
+		const width = interpolate(progress, [0, 1], [button0.width, button1.width]);
 
 		return {
 			transform: [{ translateX }],
 			width,
-			height,
 			opacity: 1,
 		};
 	});
@@ -150,13 +135,13 @@ export function BottomNavContainer({
 						<Icon
 							name={button.icon}
 							size="medium"
-							color={isActive ? colors.text : colors.textSecondary}
+							color={isActive ? colors.buttonPrimary : colors.textSecondary}
 						/>
 						<Text
 							style={[
 								styles.label,
 								{
-									color: isActive ? colors.text : colors.textSecondary,
+									color: isActive ? colors.buttonPrimary : colors.textSecondary,
 								},
 							]}
 						>
@@ -173,37 +158,37 @@ const styles = StyleSheet.create({
 	container: {
 		position: "absolute",
 		bottom: Spacing.xl,
-		left: "15%",
-		right: "15%",
-		height: 72,
+		alignSelf: "center",
+		height: 60,
 		borderRadius: BorderRadius.full,
-		borderWidth: 1,
+		// borderWidth: 1,
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-evenly",
-		paddingHorizontal: Spacing.md,
+		justifyContent: "center",
+		paddingHorizontal: 6,
+		gap: 8,
 	},
 	indicator: {
 		position: "absolute",
 		borderRadius: BorderRadius.full,
 		left: 0,
-		top: 0,
-		bottom: 0,
-		marginVertical: 8,
+		// top: 4,
+		right: 0,
+		// bottom: 4,
 	},
 	button: {
-		paddingHorizontal: Spacing.lg,
-		paddingVertical: Spacing.sm,
+		paddingHorizontal: Spacing.md,
+		paddingVertical: Spacing.xs,
 		borderRadius: BorderRadius.full,
 		alignItems: "center",
 		justifyContent: "center",
-		minWidth: 80,
-		gap: 4,
+		minWidth: 90,
+		// gap: 2,
 		zIndex: 1,
 	},
 	label: {
 		fontSize: Typography.fontSize.xs,
 		fontWeight: Typography.fontWeight.medium,
-		marginTop: 2,
+		// marginTop: 1,
 	},
 });

@@ -70,10 +70,13 @@ function CollapsibleSection({
 	}, [isExpanded, rotation, height]);
 
 	// Measure content height
-	const handleContentLayout = useCallback((event: LayoutChangeEvent) => {
-		const { height: measuredHeight } = event.nativeEvent.layout;
-		contentHeight.value = measuredHeight;
-	}, [contentHeight]);
+	const handleContentLayout = useCallback(
+		(event: LayoutChangeEvent) => {
+			const { height: measuredHeight } = event.nativeEvent.layout;
+			contentHeight.value = measuredHeight;
+		},
+		[contentHeight],
+	);
 
 	// Animated styles
 	const chevronAnimatedStyle = useAnimatedStyle(() => ({
@@ -97,11 +100,7 @@ function CollapsibleSection({
 					{title}
 				</Text>
 				<Animated.View style={chevronAnimatedStyle}>
-					<Icon
-						name="chevron-down"
-						size="small"
-						color={colors.textSecondary}
-					/>
+					<Icon name="chevron-down" size="small" color={colors.textSecondary} />
 				</Animated.View>
 			</TouchableOpacity>
 
@@ -271,7 +270,9 @@ export function SettingsScreen() {
 				<CollapsibleSection title="Appearance" defaultExpanded={true}>
 					<View style={styles.themeButtons}>
 						<Button
-							variant={settingsState.theme === "light" ? "primary" : "secondary"}
+							variant={
+								settingsState.theme === "light" ? "primary" : "secondary"
+							}
 							size="small"
 							onPress={() => handleThemeChange("light")}
 							icon={<Icon name="white-balance-sunny" size="small" />}
@@ -289,7 +290,9 @@ export function SettingsScreen() {
 							Dark
 						</Button>
 						<Button
-							variant={settingsState.theme === "system" ? "primary" : "secondary"}
+							variant={
+								settingsState.theme === "system" ? "primary" : "secondary"
+							}
 							size="small"
 							onPress={() => handleThemeChange("system")}
 							icon={<Icon name="cellphone" size="small" />}
@@ -371,7 +374,9 @@ export function SettingsScreen() {
 						</TouchableOpacity>
 
 						<View style={styles.versionRow}>
-							<Text style={[styles.versionLabel, { color: colors.textSecondary }]}>
+							<Text
+								style={[styles.versionLabel, { color: colors.textSecondary }]}
+							>
 								Version {appVersion}
 							</Text>
 						</View>
@@ -399,7 +404,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: Spacing.md,
 	},
 	section: {
-		marginBottom: Spacing.xl,
+		// marginBottom: Spacing.xl,
 	},
 	lastSection: {
 		marginBottom: Spacing.xxl,
@@ -410,13 +415,15 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		marginBottom: Spacing.md,
 		paddingVertical: Spacing.md,
-		paddingHorizontal: Spacing.sm,
+		// paddingHorizontal: Spacing.sm,
 	},
 	sectionTitle: {
 		fontSize: Typography.fontSize.lg,
 		fontWeight: Typography.fontWeight.bold,
 	},
 	collapsibleContent: {
+		paddingHorizontal: Spacing.md,
+		marginBottom: Spacing.sm,
 		overflow: "hidden",
 	},
 	themeButtons: {
