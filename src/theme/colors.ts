@@ -67,6 +67,7 @@ export const Colors = {
 		navigationBorder: "#E5E5E7",
 		navigationActive: "#007AFF",
 		navigationInactive: "#999999",
+		navIndicator: "rgba(0, 0, 0, 0.1)",
 	},
 
 	dark: {
@@ -137,6 +138,7 @@ export const Colors = {
 		navigationBorder: "#38383A",
 		navigationActive: "#0A84FF",
 		navigationInactive: "#666666",
+		navIndicator: "rgba(255, 255, 255, 0.15)",
 	},
 };
 

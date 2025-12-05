@@ -114,7 +114,7 @@ export function BottomNavContainer({
 				style={[
 					styles.indicator,
 					{
-						backgroundColor: "rgba(255, 255, 255, 0.15)",
+						backgroundColor: colors.navIndicator,
 					},
 					indicatorStyle,
 				]}
@@ -157,7 +157,7 @@ export function BottomNavContainer({
 const styles = StyleSheet.create({
 	container: {
 		position: "absolute",
-		bottom: Spacing.xl,
+		bottom: Spacing.lg,
 		alignSelf: "center",
 		height: 60,
 		borderRadius: BorderRadius.full,
@@ -165,16 +165,16 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
-		paddingHorizontal: 6,
+		paddingHorizontal: 3,
 		gap: 8,
 	},
 	indicator: {
 		position: "absolute",
 		borderRadius: BorderRadius.full,
+		// right: 0,
 		left: 0,
-		// top: 4,
-		right: 0,
-		// bottom: 4,
+		top: 3,
+		bottom: 3,
 	},
 	button: {
 		paddingHorizontal: Spacing.md,
