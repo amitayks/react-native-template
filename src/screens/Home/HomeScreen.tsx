@@ -20,7 +20,7 @@ const spacing = Spacing;
  * Available Components:
  * - Atoms: Button, Icon, Badge, ProgressBar, etc. (see @components/atoms)
  * - Molecules: SearchBar, BottomNavContainer, etc. (see @components/molecules)
- * - Organisms: SettingsDrawer, HorizontalPageContainer (see @components/organisms)
+ * - Organisms: SwipeableMainContainer (see @components/organisms)
  *
  * OpenSpec Reference: specs/screens/spec.md
  * AI Instructions: openspec/ai-instructions/screen-generation.md
