@@ -3,9 +3,10 @@ import { Icon } from "@components/atoms/Icon";
 import { useSettings, type Theme } from "@contexts/SettingsContext";
 import { Spacing, Typography } from "@theme/colors";
 import { useTheme } from "@theme/useTheme";
-import { useCallback } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import {
 	Alert,
+	LayoutChangeEvent,
 	ScrollView,
 	StyleSheet,
 	Text,
@@ -14,6 +15,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DeviceInfo from "react-native-device-info";
+import Animated, {
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from "react-native-reanimated";
 
 /* AI-INSTRUCTION-START:settings-screen
  * This is the full-page settings screen for your application.
@@ -27,6 +33,98 @@ import DeviceInfo from "react-native-device-info";
  * OpenSpec Reference: specs/screens/spec.md
  * AI Instructions: openspec/ai-instructions/settings-configuration.md
  * AI-INSTRUCTION-END */
+
+interface CollapsibleSectionProps {
+	title: string;
+	children: ReactNode;
+	defaultExpanded?: boolean;
+}
+
+function CollapsibleSection({
+	title,
+	children,
+	defaultExpanded = true,
+}: CollapsibleSectionProps) {
+	const { colors } = useTheme();
+	const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+	// Animated values (use shared values for reactive animations)
+	const contentHeight = useSharedValue(1000); // Start with large value to allow initial measurement
+	const rotation = useSharedValue(defaultExpanded ? 180 : 0);
+	const height = useSharedValue(defaultExpanded ? 1 : 0);
+
+	// Toggle section
+	const toggleSection = useCallback(() => {
+		const newExpandedState = !isExpanded;
+		setIsExpanded(newExpandedState);
+
+		// Animate chevron rotation
+		rotation.value = withTiming(newExpandedState ? 180 : 0, {
+			duration: 300,
+		});
+
+		// Animate content height
+		height.value = withTiming(newExpandedState ? 1 : 0, {
+			duration: 300,
+		});
+	}, [isExpanded, rotation, height]);
+
+	// Measure content height
+	const handleContentLayout = useCallback((event: LayoutChangeEvent) => {
+		const { height: measuredHeight } = event.nativeEvent.layout;
+		contentHeight.value = measuredHeight;
+	}, [contentHeight]);
+
+	// Animated styles
+	const chevronAnimatedStyle = useAnimatedStyle(() => ({
+		transform: [{ rotate: `${rotation.value}deg` }],
+	}));
+
+	const contentAnimatedStyle = useAnimatedStyle(() => ({
+		maxHeight: height.value * contentHeight.value,
+		opacity: height.value,
+	}));
+
+	return (
+		<View style={styles.section}>
+			{/* Section Title with Chevron */}
+			<TouchableOpacity
+				style={styles.sectionHeader}
+				onPress={toggleSection}
+				activeOpacity={0.7}
+			>
+				<Text style={[styles.sectionTitle, { color: colors.text }]}>
+					{title}
+				</Text>
+				<Animated.View style={chevronAnimatedStyle}>
+					<Icon
+						name="chevron-down"
+						size="small"
+						color={colors.textSecondary}
+					/>
+				</Animated.View>
+			</TouchableOpacity>
+
+			{/* Hidden measurement container - always renders to measure content */}
+			<View
+				style={{
+					position: "absolute",
+					opacity: 0,
+					pointerEvents: "none",
+					zIndex: -1,
+				}}
+				onLayout={handleContentLayout}
+			>
+				{children}
+			</View>
+
+			{/* Collapsible Content */}
+			<Animated.View style={[styles.collapsibleContent, contentAnimatedStyle]}>
+				{children}
+			</Animated.View>
+		</View>
+	);
+}
 
 export function SettingsScreen() {
 	const { colors } = useTheme();
@@ -170,11 +268,7 @@ export function SettingsScreen() {
 				 * AI-INSTRUCTION-END */}
 
 				{/* Appearance Section */}
-				<View style={styles.section}>
-					<Text style={[styles.sectionTitle, { color: colors.text }]}>
-						Appearance
-					</Text>
-
+				<CollapsibleSection title="Appearance" defaultExpanded={true}>
 					<View style={styles.themeButtons}>
 						<Button
 							variant={settingsState.theme === "light" ? "primary" : "secondary"}
@@ -204,14 +298,10 @@ export function SettingsScreen() {
 							System
 						</Button>
 					</View>
-				</View>
+				</CollapsibleSection>
 
 				{/* Data Management Section */}
-				<View style={styles.section}>
-					<Text style={[styles.sectionTitle, { color: colors.text }]}>
-						Data Management
-					</Text>
-
+				<CollapsibleSection title="Data Management" defaultExpanded={false}>
 					<Button
 						variant="secondary"
 						size="medium"
@@ -233,61 +323,59 @@ export function SettingsScreen() {
 							Delete All Data
 						</Button>
 					</View>
-				</View>
+				</CollapsibleSection>
 
 				{/* Legal Section */}
-				<View style={[styles.section, styles.lastSection]}>
-					<Text style={[styles.sectionTitle, { color: colors.text }]}>
-						Legal
-					</Text>
+				<View style={styles.lastSection}>
+					<CollapsibleSection title="Legal" defaultExpanded={false}>
+						<TouchableOpacity
+							style={styles.legalRow}
+							onPress={handlePrivacyPolicyPress}
+						>
+							<Text style={[styles.legalLabel, { color: colors.text }]}>
+								Privacy Policy
+							</Text>
+							<Icon
+								name="chevron-right"
+								size="small"
+								color={colors.textSecondary}
+							/>
+						</TouchableOpacity>
 
-					<TouchableOpacity
-						style={styles.legalRow}
-						onPress={handlePrivacyPolicyPress}
-					>
-						<Text style={[styles.legalLabel, { color: colors.text }]}>
-							Privacy Policy
-						</Text>
-						<Icon
-							name="chevron-right"
-							size="small"
-							color={colors.textSecondary}
-						/>
-					</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.legalRow}
+							onPress={handleTermsOfServicePress}
+						>
+							<Text style={[styles.legalLabel, { color: colors.text }]}>
+								Terms of Service
+							</Text>
+							<Icon
+								name="chevron-right"
+								size="small"
+								color={colors.textSecondary}
+							/>
+						</TouchableOpacity>
 
-					<TouchableOpacity
-						style={styles.legalRow}
-						onPress={handleTermsOfServicePress}
-					>
-						<Text style={[styles.legalLabel, { color: colors.text }]}>
-							Terms of Service
-						</Text>
-						<Icon
-							name="chevron-right"
-							size="small"
-							color={colors.textSecondary}
-						/>
-					</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.legalRow}
+							onPress={handleLicensesPress}
+						>
+							<Text style={[styles.legalLabel, { color: colors.text }]}>
+								Open Source Licenses
+							</Text>
+							<Icon
+								name="chevron-right"
+								size="small"
+								color={colors.textSecondary}
+							/>
+						</TouchableOpacity>
 
-					<TouchableOpacity
-						style={styles.legalRow}
-						onPress={handleLicensesPress}
-					>
-						<Text style={[styles.legalLabel, { color: colors.text }]}>
-							Open Source Licenses
-						</Text>
-						<Icon
-							name="chevron-right"
-							size="small"
-							color={colors.textSecondary}
-						/>
-					</TouchableOpacity>
-
-					<View style={styles.versionRow}>
-						<Text style={[styles.versionLabel, { color: colors.textSecondary }]}>
-							Version {appVersion}
-						</Text>
-					</View>
+						<View style={styles.versionRow}>
+							<Text style={[styles.versionLabel, { color: colors.textSecondary }]}>
+								Version {appVersion}
+							</Text>
+						</View>
+					</CollapsibleSection>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
@@ -316,10 +404,20 @@ const styles = StyleSheet.create({
 	lastSection: {
 		marginBottom: Spacing.xxl,
 	},
+	sectionHeader: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		marginBottom: Spacing.md,
+		paddingVertical: Spacing.md,
+		paddingHorizontal: Spacing.sm,
+	},
 	sectionTitle: {
 		fontSize: Typography.fontSize.lg,
 		fontWeight: Typography.fontWeight.bold,
-		marginBottom: Spacing.md,
+	},
+	collapsibleContent: {
+		overflow: "hidden",
 	},
 	themeButtons: {
 		flexDirection: "row",
