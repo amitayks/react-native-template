@@ -116,6 +116,28 @@ android {
         // Enable multidex for large apps
         multiDexEnabled true
     }
+
+    /* AI-INSTRUCTION-START:release-signing
+     * Release Signing Configuration
+     *
+     * USER ACTION REQUIRED:
+     * This configuration reads keystore details from gradle.properties.
+     *
+     * Before building a production release:
+     * 1. Generate a release keystore (see android/gradle.properties for command)
+     * 2. Place keystore file in android/app/
+     * 3. Update APP_UPLOAD_* properties in android/gradle.properties
+     *
+     * The release signing config reads these properties:
+     * - APP_UPLOAD_STORE_FILE: Path to keystore file (relative to android/app/)
+     * - APP_UPLOAD_KEY_ALIAS: Key alias used when creating keystore
+     * - APP_UPLOAD_STORE_PASSWORD: Keystore password
+     * - APP_UPLOAD_KEY_PASSWORD: Key password
+     *
+     * Without proper signing configuration, release builds will fail or be unsigned.
+     *
+     * For customization guidance: openspec/project.md → Workflow 0 → Section 6
+     * AI-INSTRUCTION-END */
     signingConfigs {
         release {
             if (project.hasProperty('APP_UPLOAD_STORE_FILE')) {

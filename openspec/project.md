@@ -357,6 +357,13 @@ Customize the template for your specific app - this is the FIRST thing you shoul
 **android/app/src/main/res/values/strings.xml** - Android strings
 - `app_name`: "{{APP_NAME}}" → Your app's display name
 
+**android/gradle.properties** - Release signing configuration
+- `APP_UPLOAD_STORE_FILE`: "release.keystore" → Your keystore filename
+- `APP_UPLOAD_KEY_ALIAS`: "app-key-alias" → Your key alias
+- `APP_UPLOAD_STORE_PASSWORD`: Update with your keystore password
+- `APP_UPLOAD_KEY_PASSWORD`: Update with your key password
+- See "Release Keystore Setup" section below for detailed instructions
+
 **android/app/src/main/java/com/visara/** - Java/Kotlin package structure
 - Rename directory to match your package name
 - Example: com.visara → com.mycompany.myapp
@@ -396,7 +403,58 @@ Replace default icons in:
 - `android/app/src/main/res/mipmap-*/` - All app_launcher* files
 - `android/app/src/main/res/mipmap-anydpi-v26/app_launcher.xml` - Adaptive icon config
 
-### 6. Branding & Theme (Optional)
+### 6. Release Keystore Setup (REQUIRED for Production)
+
+**Generate Release Keystore:**
+
+```bash
+cd android/app
+keytool -genkeypair -v -storetype PKCS12 -keystore release.keystore \
+  -alias app-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+**You will be prompted for:**
+- Keystore password (SAVE THIS SECURELY!)
+- Key password (typically same as keystore password)
+- Your name/organization details
+
+**Update Configuration:**
+
+Edit `android/gradle.properties`:
+```properties
+APP_UPLOAD_STORE_FILE=release.keystore
+APP_UPLOAD_KEY_ALIAS=app-key-alias
+APP_UPLOAD_STORE_PASSWORD=your_secure_password
+APP_UPLOAD_KEY_PASSWORD=your_secure_password
+```
+
+**Security Checklist:**
+- [ ] Keystore file created and placed in `android/app/`
+- [ ] Keystore backed up to secure location (outside of project)
+- [ ] Passwords updated in `gradle.properties`
+- [ ] `gradle.properties` added to `.gitignore` (if not using placeholder passwords)
+- [ ] Documented keystore password in secure password manager
+
+**CRITICAL:** If you lose the keystore file, you cannot update your published app on Google Play!
+
+### 7. Icon Assets (Optional - can do later)
+
+Replace default icons with your app's icons:
+
+**Android Icons:**
+- `android/app/src/main/res/mipmap-hdpi/` - All densities
+- `android/app/src/main/res/mipmap-mdpi/`
+- `android/app/src/main/res/mipmap-xhdpi/`
+- `android/app/src/main/res/mipmap-xxhdpi/`
+- `android/app/src/main/res/mipmap-xxxhdpi/`
+- `android/app/src/main/res/mipmap-anydpi-v26/` - Adaptive icon config
+
+**iOS Icons:**
+- `ios/[AppName]/Images.xcassets/AppIcon.appiconset/`
+
+**Tip:** Use a tool like [Icon Kitchen](https://icon.kitchen) to generate all required sizes.
+
+### 8. Branding & Theme (Optional)
 
 Update colors and branding:
 - `src/theme/colors.ts` - Primary, secondary, accent colors

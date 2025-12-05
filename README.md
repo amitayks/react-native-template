@@ -287,17 +287,64 @@ function MyComponent() {
 }
 ```
 
+## 🔐 Release Signing Setup (Android)
+
+Before building production releases, you MUST configure a release keystore:
+
+### 1. Generate Release Keystore (One-Time Setup)
+
+```bash
+cd android/app
+keytool -genkeypair -v -storetype PKCS12 -keystore release.keystore \
+  -alias app-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+**You will be prompted for:**
+- Keystore password (remember this!)
+- Your name
+- Organizational unit
+- Organization name
+- City/Locality
+- State/Province
+- Two-letter country code
+
+### 2. Update Keystore Configuration
+
+Edit `android/gradle.properties` and update these values:
+
+```properties
+APP_UPLOAD_STORE_FILE=release.keystore
+APP_UPLOAD_KEY_ALIAS=app-key-alias
+APP_UPLOAD_STORE_PASSWORD=your_password_here
+APP_UPLOAD_KEY_PASSWORD=your_password_here
+```
+
+### 3. Security Best Practices
+
+**CRITICAL:**
+- ✅ Keep the keystore file (`release.keystore`) backed up securely
+- ✅ Never commit `gradle.properties` with real passwords to Git
+- ✅ Use environment variables for CI/CD pipelines
+- ⚠️ If you lose the keystore, you cannot update your published app
+- ⚠️ Add `gradle.properties` to `.gitignore` if storing real passwords
+
+**For CI/CD, use environment variables:**
+```bash
+export APP_UPLOAD_STORE_PASSWORD=$KEYSTORE_PASSWORD
+export APP_UPLOAD_KEY_PASSWORD=$KEY_PASSWORD
+```
+
 ## 🧪 Scripts
 
 ```bash
 # Development
 npm start              # Start Metro bundler
-npm run android        # Run on Android
-npm run ios            # Run on iOS
+npm run android        # Run on Android (debug)
+npm run ios            # Run on iOS (debug)
 
 # Build
 npm run apk            # Build Android APK (debug)
-npm run aab            # Build Android App Bundle (release)
+npm run aab            # Build Android App Bundle (release - REQUIRES KEYSTORE)
 
 # Code Quality
 npm run typecheck      # TypeScript type checking
