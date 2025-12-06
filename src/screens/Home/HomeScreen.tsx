@@ -1,9 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTheme } from '@theme/useTheme';
-import { Spacing } from '@theme/colors';
-import { Button } from '@components/atoms/Button';
+import React, { useRef } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import trigger from "@mhpdev/react-native-haptics";
+import { useTheme } from "@theme/useTheme";
+import { Spacing } from "@theme/colors";
+import { Button } from "@components/atoms/Button";
+import {
+	TrueSheetModal,
+	type TrueSheetModalRef,
+} from "@components/organisms/TrueSheetModal";
 
 const spacing = Spacing;
 
@@ -28,6 +33,7 @@ const spacing = Spacing;
 
 export function HomeScreen() {
 	const { colors } = useTheme();
+	const sheetRef = useRef<TrueSheetModalRef>(null);
 
 	/* AI-INSTRUCTION-START:home-screen-logic
 	 * Add your business logic here:
@@ -41,15 +47,21 @@ export function HomeScreen() {
 	 * const navigation = useNavigation();
 	 * AI-INSTRUCTION-END */
 
+	const handleOpenSheet = () => {
+		trigger.impact("light");
+		sheetRef.current?.present();
+	};
+
 	return (
-		<SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+		<SafeAreaView
+			style={[styles.container, { backgroundColor: colors.background }]}
+			edges={["top"]}
+		>
 			<View style={styles.content}>
 				{/* AI-INSTRUCTION-START:home-screen-header
 				 * Replace this placeholder header with your app's header/title
 				 * AI-INSTRUCTION-END */}
-				<Text style={[styles.title, { color: colors.text }]}>
-					Welcome
-				</Text>
+				<Text style={[styles.title, { color: colors.text }]}>Welcome</Text>
 
 				<Text style={[styles.subtitle, { color: colors.textSecondary }]}>
 					Your app starts here
@@ -72,20 +84,52 @@ export function HomeScreen() {
 				 * AI-INSTRUCTION-END */}
 
 				<View style={styles.placeholderContent}>
-					<Text style={[styles.placeholderText, { color: colors.textSecondary }]}>
-						This is a placeholder screen.{'\n'}
+					<Text
+						style={[styles.placeholderText, { color: colors.textSecondary }]}
+					>
+						This is a placeholder screen.{"\n"}
 						Add your app's main functionality here.
 					</Text>
 
 					<Button
-						onPress={() => console.log('Button pressed')}
+						onPress={handleOpenSheet}
 						variant="primary"
 						style={styles.exampleButton}
 					>
-						Example Button
+						Open Bottom Sheet
 					</Button>
 				</View>
 			</View>
+
+			<TrueSheetModal
+				ref={sheetRef}
+				detents={["auto", 0.5, 1]}
+				cornerRadius={24}
+				backgroundColor={colors.surface}
+			>
+				<Text style={[styles.sheetTitle, { color: colors.text }]}>
+					Bottom Sheet
+				</Text>
+				<Text style={[styles.sheetText, { color: colors.textSecondary }]}>
+					This is a native bottom sheet powered by TrueSheet v3.
+				</Text>
+				<View style={styles.sheetButtons}>
+					<Button
+						onPress={() => sheetRef.current?.resize(1)}
+						variant="secondary"
+						style={styles.sheetButton}
+					>
+						Expand
+					</Button>
+					<Button
+						onPress={() => sheetRef.current?.dismiss()}
+						variant="primary"
+						style={styles.sheetButton}
+					>
+						Close
+					</Button>
+				</View>
+			</TrueSheetModal>
 		</SafeAreaView>
 	);
 }
@@ -100,7 +144,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 32,
-		fontWeight: 'bold',
+		fontWeight: "bold",
 		marginBottom: spacing.sm,
 	},
 	subtitle: {
@@ -109,16 +153,33 @@ const styles = StyleSheet.create({
 	},
 	placeholderContent: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	placeholderText: {
 		fontSize: 16,
-		textAlign: 'center',
+		textAlign: "center",
 		marginBottom: spacing.xl,
 		lineHeight: 24,
 	},
 	exampleButton: {
 		minWidth: 200,
+	},
+	sheetTitle: {
+		fontSize: 24,
+		fontWeight: "bold",
+		marginBottom: spacing.sm,
+	},
+	sheetText: {
+		fontSize: 16,
+		marginBottom: spacing.lg,
+		lineHeight: 24,
+	},
+	sheetButtons: {
+		flexDirection: "row",
+		gap: spacing.md,
+	},
+	sheetButton: {
+		flex: 1,
 	},
 });

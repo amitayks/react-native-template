@@ -1,4 +1,4 @@
-import { MMKV } from 'react-native-mmkv';
+import { createMMKV } from 'react-native-mmkv';
 
 /* AI-INSTRUCTION-START:mmkv-storage-id
  * MMKV Storage Configuration
@@ -16,7 +16,7 @@ import { MMKV } from 'react-native-mmkv';
  * Note: Changing these values after app release will make existing data inaccessible.
  * AI-INSTRUCTION-END */
 
-export const storage = new MMKV({
+export const storage = createMMKV({
 	id: '{{PACKAGE_NAME}}-storage',
 	encryptionKey: '{{PACKAGE_NAME}}-encryption-key',
 });
@@ -30,7 +30,7 @@ export const setItem = (key: string, value: string): void => {
 };
 
 export const removeItem = (key: string): void => {
-	storage.delete(key);
+	storage.remove(key);
 };
 
 export const clearAll = (): void => {

@@ -160,7 +160,7 @@ export class EncryptionService {
 			});
 
 			// Remove flag from MMKV
-			storage.delete(ENCRYPTION_KEY_GENERATED_FLAG);
+			storage.remove(ENCRYPTION_KEY_GENERATED_FLAG);
 
 			// Clear cached key
 			this.encryptionKey = null;

@@ -2,6 +2,7 @@ import { Icon } from "@components/atoms/Icon";
 import { useNavigation, type PageIndex } from "@contexts/NavigationContext";
 import { BorderRadius, Spacing, Typography } from "@theme/colors";
 import { useTheme } from "@theme/useTheme";
+import trigger from "@mhpdev/react-native-haptics";
 import { useState } from "react";
 import {
 	StyleSheet,
@@ -81,6 +82,7 @@ export function BottomNavContainer({
 	const dragStartProgress = useSharedValue(0);
 
 	const handlePress = (page: PageIndex) => {
+		trigger.impact("light");
 		dispatch({ type: "SET_PAGE", payload: page });
 	};
 

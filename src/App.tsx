@@ -5,8 +5,9 @@ import { SettingsProvider } from "@contexts/SettingsContext";
 import { ToastProvider } from "@contexts/ToastContext";
 import { useDatabase } from "@hooks/useDatabase";
 import { RootNavigator } from "@navigation/RootNavigator";
+import { useTheme } from "@theme/useTheme";
 import React from "react";
-import { StatusBar, useColorScheme } from "react-native";
+import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
@@ -33,7 +34,7 @@ import Toast from "react-native-toast-message";
  * Must be inside providers to access context
  */
 function AppContent(): React.JSX.Element {
-	const colorScheme = useColorScheme();
+	const { isDark } = useTheme();
 
 	// Initialize database
 	useDatabase();
@@ -54,7 +55,7 @@ function AppContent(): React.JSX.Element {
 	return (
 		<>
 			<StatusBar
-				barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+				barStyle={isDark ? "light-content" : "dark-content"}
 				backgroundColor="transparent"
 				translucent
 			/>
