@@ -16,7 +16,7 @@ android/app/build/
 android/build/
 android/.gradle/
 android/captures/
-android/gradle/wrapper/gradle-wrapper.jar
+
 android/local.properties
 android/keystore.properties
 *.apk
@@ -132,7 +132,7 @@ coverage/
 *.ipr
 
 # Gradle Wrapper
-!gradle/wrapper/gradle-wrapper.jar
+
 android/gradle.properties
 *.properties
 
